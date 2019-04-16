@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Principal {
 	private static Scanner teclado = new Scanner (System.in);
 	// static, variável de classe
+	//teste teste teste
 
 	public static void main(String[] args) {
 		int opcao;
