@@ -11,6 +11,7 @@ public class Contato implements Comparable<Contato> {
 	
 	private String nome;
 	private GregorianCalendar dataNasc;
+	private CPF cpf;
 	//private String cpf; ou então atributo CPF, depende de como será a classe 
 	//private ArrayList<Endereco> alEndereco;
 	
@@ -60,6 +61,15 @@ public class Contato implements Comparable<Contato> {
 	
 	public GregorianCalendar getDataNasc(){
 		return this.dataNasc;
+	}
+	
+	public String getCPF() {
+		if(!this.cpf.isValid()) return "CPF inv�lido";
+		else return cpf.toString();
+	}
+	
+	public void setCPF(String cpf) {
+		this.cpf = new CPF(cpf);
 	}
 
 	public String toString() {
