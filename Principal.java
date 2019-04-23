@@ -18,6 +18,7 @@ public class Principal {
 			System.out.println("2 - listar");
 			System.out.println("3 - ordenar de A-Z");
 			System.out.println("4 - ordenar de Z-A");
+			System.out.println("5 - adicionar endereço");
 			System.out.print("\nOpcao: ");
 			opcao = teclado.nextInt();
 		
@@ -41,6 +42,9 @@ public class Principal {
 			case 4:
 				lc.ordenaZA();
 				break;
+			case 5:
+				
+				break;
 			default:
 				System.out.println("Opcao inexistente");
 				break;
@@ -50,6 +54,17 @@ public class Principal {
 
 	private static Contato lerContato() {
 		String nome;
+		Contato contato;
+		teclado.nextLine(); // para consumir o enter
+		System.out.println("\n--- Novo Contato ---");
+		System.out.print("Nome: ");
+		nome = teclado.nextLine();
+		contato = new Contato(nome);
+		return contato;
+	}
+	
+	private static Endereco VEnd() {
+		String rua;
 		Contato contato;
 		teclado.nextLine(); // para consumir o enter
 		System.out.println("\n--- Novo Contato ---");
