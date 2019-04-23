@@ -7,31 +7,21 @@ public class Principal {
 
 	public static void main(String[] args) {
 		int opcao;
-		int opcaoend;
 
 		Lista lc = Lista.getInstance();
 		ListaEndereco le = ListaEndereco.getInstance();
 		
 		do {
 			// menu de opcoes contato
-			System.out.println("\n--- Menu contatos---\n");
+			System.out.println("\n--- Menu ---\n");
 			System.out.println("0 - sair");
 			System.out.println("1 - adicionar");
 			System.out.println("2 - listar");
 			System.out.println("3 - ordenar de A-Z");
 			System.out.println("4 - ordenar de Z-A");
+			System.out.println("5 - adicionar endereço");
 			System.out.print("\nOpcao: ");
 			opcao = teclado.nextInt();
-			// menu de opçoes endereco
-
-			System.out.println("\n--- Menu endereços ---\n");
-			System.out.println("0 - sair");
-			System.out.println("1 - adicionar");
-			System.out.println("2 - listar");
-			System.out.println("3 - ordenar de A-Z");
-			System.out.println("4 - ordenar de Z-A");
-			System.out.print("\nOpcao: ");
-			opcaoend = teclado.nextInt();
 			
 			// cada opcao chama uma funÃ§Ã£o static da main
 			switch (opcao) {
@@ -54,7 +44,7 @@ public class Principal {
 				lc.ordenaZA();
 				break;
 			case 5:
-				
+				le.addEndereco(lerEndereco());
 				break;
 			default:
 				System.out.println("Opcao inexistente");
@@ -74,15 +64,29 @@ public class Principal {
 		return contato;
 	}
 	
-	private static Endereco VEnd() {
-		String rua;
-		Contato contato;
+	private static Endereco lerEndereco() {
+		boolean numeric;
+		String logradouro;
+		Endereco endereco;
 		teclado.nextLine(); // para consumir o enter
-		System.out.println("\n--- Novo Contato ---");
-		System.out.print("Nome: ");
-		nome = teclado.nextLine();
-		contato = new Contato(nome);
-		return contato;
+		System.out.println("\n--- Novo Endereco ---");
+		System.out.print("Logradouro: ");
+		logradouro = teclado.nextLine();
+		 try {
+	            Double num = Double.parseDouble(logradouro);
+	        } catch (NumberFormatException e) {
+	            numeric = false;
+	        }
+		 if(numeric) {
+			 System.out.println("Por favor digitar o nome da rua");
+			 re
+		 }
+		 else {
+			 
+		 }
+			 
+		endereco = new endereco(logradouro);
+		return endereco;
 	}
 
 }

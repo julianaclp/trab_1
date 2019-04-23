@@ -30,6 +30,11 @@ public class ListaEndereco implements Iterable<Endereco> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void addContato(Contato lerContato) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 /*	public Contato getContato(int i){
 		return alLista.get(i);
