@@ -7,21 +7,32 @@ public class Principal {
 
 	public static void main(String[] args) {
 		int opcao;
+		int opcaoend;
 
 		Lista lc = Lista.getInstance();
+		ListaEndereco le = ListaEndereco.getInstance();
 		
 		do {
-			// menu de opcoes
-			System.out.println("\n--- Menu ---\n");
+			// menu de opcoes contato
+			System.out.println("\n--- Menu contatos---\n");
 			System.out.println("0 - sair");
 			System.out.println("1 - adicionar");
 			System.out.println("2 - listar");
 			System.out.println("3 - ordenar de A-Z");
 			System.out.println("4 - ordenar de Z-A");
-			System.out.println("5 - adicionar endereço");
 			System.out.print("\nOpcao: ");
 			opcao = teclado.nextInt();
-		
+			// menu de opçoes endereco
+
+			System.out.println("\n--- Menu endereços ---\n");
+			System.out.println("0 - sair");
+			System.out.println("1 - adicionar");
+			System.out.println("2 - listar");
+			System.out.println("3 - ordenar de A-Z");
+			System.out.println("4 - ordenar de Z-A");
+			System.out.print("\nOpcao: ");
+			opcaoend = teclado.nextInt();
+			
 			// cada opcao chama uma funÃ§Ã£o static da main
 			switch (opcao) {
 			case 0:
