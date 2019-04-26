@@ -65,27 +65,25 @@ public class Principal {
 	}
 	
 	private static Endereco lerEndereco() {
-		boolean numeric;
+		boolean numeric = false;
 		String logradouro;
 		Endereco endereco;
 		teclado.nextLine(); // para consumir o enter
 		System.out.println("\n--- Novo Endereco ---");
 		System.out.print("Logradouro: ");
 		logradouro = teclado.nextLine();
-		 try {
+		do {
+			try {
 	            Double num = Double.parseDouble(logradouro);
 	        } catch (NumberFormatException e) {
 	            numeric = false;
 	        }
 		 if(numeric) {
 			 System.out.println("Por favor digitar o nome da rua");
-			 re
 		 }
-		 else {
-			 
-		 }
-			 
-		endereco = new endereco(logradouro);
+		} while(numeric);
+		
+		endereco = new Endereco(logradouro);
 		return endereco;
 	}
 

@@ -17,12 +17,17 @@ public class Endereco {
 	
 	public Endereco(String logradouro,int numero,String cidade, String estado, String CEP, String complemento) {
 		super();
-		this.logradouro=logradouro;
-		this.numero=numero;
-		this.cidade=cidade;
-		this.estado=estado;
-		this.CEP=CEP;
-		this.complemento=complemento;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.CEP = CEP;
+		this.complemento = complemento;
+	}
+	
+	public Endereco(String logradouro) {
+		super();
+		this.logradouro = logradouro;
 	}
 
 }
