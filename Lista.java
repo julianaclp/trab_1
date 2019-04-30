@@ -3,6 +3,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class Lista implements Iterable<Contato> {
 	// implements Iterable<Contato> exigiu iterator()
@@ -51,6 +52,42 @@ public class Lista implements Iterable<Contato> {
 			if(cpf.equals(c.getCPF())) existe = true;
 		}
 		return existe;
+	}
+	
+	public void editarContato(int campo, String cpf) {
+		Scanner teclado = new Scanner (System.in);
+		int index = this.getIndex(cpf);
+		switch(campo) {
+		case 1:
+			this.getContato(index).setNome(teclado.nextLine());
+			break;
+		case 2:
+			int dia = teclado.nextInt();
+			int mes = teclado.nextInt();
+			int ano = teclado.nextInt();
+			this.getContato(index).setDataNasc(dia, mes, ano);
+			break;
+		case 3:
+			CPF novoCPF; 
+			do {
+				novoCPF = new CPF(teclado.nextLine());
+			} while(!novoCPF.isValid());
+			this.getContato(index).setCPF(novoCPF.toString());
+			break;
+		default:
+			System.out.println("Campo inexistente");
+		}
+	}
+	
+	public int getIndex(String cpf) {
+		int index = -1;
+		if(this.existeCpf(cpf)) {
+			for(int i = 0; i < this.size(); i++) {
+				Contato c = this.getContato(i);
+				if(cpf.equals(c.getCPF())) index = i;
+			}
+		}
+		return index;
 	}
 	
 	// método sort usará compareTo da Contato e ordenará o ArrayList alLista

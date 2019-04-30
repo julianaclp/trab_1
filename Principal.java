@@ -69,7 +69,7 @@ public class Principal {
 							System.out.print("Digite o CPF do usuário: ");
 							cpf = teclado.nextLine();
 						} while(!lc.existeCpf(cpf));
-						editarContato(opcao, cpf);
+						lc.editarContato(opcao, cpf);
 						break;
 					case 5: //remover
 						break;
@@ -125,20 +125,6 @@ public class Principal {
 		
 		endereco = new Endereco(logradouro);
 		return endereco;
-	}
-	
-	private static void editarContato(int campo, String CPF) {
-		switch(campo) {
-		case 1: //nome
-			
-			break;
-		case 2: //data de nascimento
-			break;
-		case 3: //cpf
-			break;
-		default:
-			System.out.println("Campo inexistente");
-		}
 	}
 	
 	private static void cls() {
