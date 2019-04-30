@@ -64,8 +64,16 @@ public class Contato implements Comparable<Contato> {
 	}
 	
 	public String getCPF() {
-		if(!this.cpf.isValid()) return "CPF inválido";
-		else return cpf.toString();
+		return cpf.toString();
+	}
+	
+	public boolean verificaCPF(String cpf) {
+		CPF verificador = new CPF(cpf);
+		if(verificador.isValid()) {
+			setCPF(cpf);
+			return true;
+		}
+		else return false;
 	}
 	
 	public void setCPF(String cpf) {

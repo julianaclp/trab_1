@@ -37,6 +37,22 @@ public class Lista implements Iterable<Contato> {
 		return alLista.size();
 	}
 	
+	public boolean existeContato(String nome) {
+		boolean existe = false;
+		for(Contato c : alLista) {
+			if(nome.equalsIgnoreCase(c.getNome())) existe = true;
+		}
+		return existe;
+	}
+	
+	public boolean existeCpf(String cpf) {
+		boolean existe = false;
+		for(Contato c : alLista) {
+			if(cpf.equals(c.getCPF())) existe = true;
+		}
+		return existe;
+	}
+	
 	// método sort usará compareTo da Contato e ordenará o ArrayList alLista
 	// pela ordem natural definida na classe Contato (no caso, o atributo nome)
 	public void ordenaAZ(){
@@ -57,6 +73,23 @@ public class Lista implements Iterable<Contato> {
 				return Integer.compare(diaC1, diaC2);
 			}
 		});
+	}
+	
+	public ArrayList<Contato> search(String nome) {
+		ArrayList<Contato> result = null;
+		for(Contato c : alLista) {
+			if(c.getNome().contains(nome)) {
+				if(result == null) result = new ArrayList<Contato>(); 
+				result.add(c);
+			}
+		}
+		return result;
+	}
+	
+	public void imprimeLista() {
+		for(Contato c : alLista) {
+			System.out.println(c);
+		}
 	}
 	
 	@Override

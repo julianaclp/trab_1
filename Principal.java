@@ -9,18 +9,20 @@ public class Principal {
 		int opcao;
 
 		Lista lc = Lista.getInstance();
+		lc.addContato(new Contato("Joao", 2, 1, 2000));
+		lc.addContato(new Contato("Maria", 2, 2, 1999));
+		lc.addContato(new Contato("Pedro", 5, 11, 2001));
+		lc.addContato(new Contato("Tiago", 10, 12, 2000));
+		lc.addContato(new Contato("Jose", 4, 4, 2000));
+		lc.addContato(new Contato("Lucas", 22, 10, 2010));
+		lc.addContato(new Contato("Mateus", 3, 1, 1950));
+		
 		ListaEndereco le = ListaEndereco.getInstance();
 		
+		menuPrinipal();
+		System.out.print("\nOpcao: ");
 		do {
 			// menu de opcoes contato
-			System.out.println("\n--- Menu ---\n");
-			System.out.println("0 - sair");
-			System.out.println("1 - adicionar");
-			System.out.println("2 - listar");
-			System.out.println("3 - ordenar de A-Z");
-			System.out.println("4 - ordenar de Z-A");
-			System.out.println("5 - adicionar endereço");
-			System.out.print("\nOpcao: ");
 			opcao = teclado.nextInt();
 			
 			// cada opcao chama uma funÃ§Ã£o static da main
@@ -28,23 +30,61 @@ public class Principal {
 			case 0:
 				break;  // system.exit(0);
 			case 1:
-				lc.addContato(lerContato());
+				menuSecundario("Contatos");
+				do {
+					opcao = teclado.nextInt();
+					switch(opcao) {
+					case 1: //add 
+						lc.addContato(new Contato(teclado.nextLine()));
+						break;
+					case 2: //listar
+						lc.imprimeLista();
+						break;
+					case 3: //ordenar
+						do {
+							System.out.println("1 - A-Z");
+							System.out.println("2 - Z-A");
+							opcao = teclado.nextInt();
+						} while(opcao != 1 && opcao != 2);
+						switch(opcao) {
+						case 1:
+							lc.ordenaAZ();
+							lc.imprimeLista();
+							break;
+						case 2:
+							lc.ordenaZA();
+							lc.imprimeLista();
+							break;
+						}
+						break;
+					case 4: //editar
+						String cpf;
+						do {
+							System.out.println("1 - Nome");
+							System.out.println("2 - Data de nascimento");
+							System.out.println("3 - CPF");
+							opcao = teclado.nextInt();
+						} while(opcao < 0 || opcao > 3);
+						do {
+							System.out.print("Digite o CPF do usuário: ");
+							cpf = teclado.nextLine();
+						} while(!lc.existeCpf(cpf));
+						editarContato(opcao, cpf);
+						break;
+					case 5: //remover
+						break;
+					case 6: //voltar
+						menuPrinipal();
+						break;
+					case 7: //sair
+						System.exit(0);
+					default:
+						System.out.println("Opção inexistente");
+					}
+				} while(opcao != 7 && opcao != 6);
 				break;
-			case 2:
-				System.out.println("\n--- Lista ---\n");
-				for (int i = 0; i < lc.size(); i++) {
-					System.out.println(i + ":" + lc.getContato(i));
-				}
-				// para remover o contato 1 => lc.removeContato(1);
-				break;
-			case 3:
-				lc.ordenaAZ();
-				break;
-			case 4:
-				lc.ordenaZA();
-				break;
-			case 5:
-				le.addEndereco(lerEndereco());
+			case 2: 
+				menuSecundario("Endereço");
 				break;
 			default:
 				System.out.println("Opcao inexistente");
@@ -85,6 +125,42 @@ public class Principal {
 		
 		endereco = new Endereco(logradouro);
 		return endereco;
+	}
+	
+	private static void editarContato(int campo, String CPF) {
+		switch(campo) {
+		case 1: //nome
+			
+			break;
+		case 2: //data de nascimento
+			break;
+		case 3: //cpf
+			break;
+		default:
+			System.out.println("Campo inexistente");
+		}
+	}
+	
+	private static void cls() {
+		for(int i = 0; i < 100; i++) System.out.println();
+	}
+	
+	private static void menuPrinipal() {
+		System.out.println("\n--- Menu ---\n");
+		System.out.println("0 - Sair");
+		System.out.println("1 - Menu contatos");
+		System.out.println("2 - Menu endereço");
+	}
+	
+	private static void menuSecundario(String tipo) {
+		System.out.println("\n--- " + tipo + " ---\n");
+		System.out.println("1 - adicionar");
+		System.out.println("2 - listar");
+		System.out.println("3 - ordenar");
+		System.out.println("4 - editar");
+		System.out.println("5 - remover");
+		System.out.println("6 - voltar");
+		System.out.println("7 - sair");
 	}
 
 }
