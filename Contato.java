@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
+//teste
 // implements a interface Comparabel exige a implementação do método compareTo
 public class Contato implements Comparable<Contato> {
 	// implements Comparable<Contato> exigiu compareTo()
