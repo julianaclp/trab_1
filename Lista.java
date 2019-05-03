@@ -115,7 +115,7 @@ public class Lista implements Iterable<Contato> {
 	public ArrayList<Contato> search(String nome) {
 		ArrayList<Contato> result = null;
 		for(Contato c : alLista) {
-			if(c.getNome().contains(nome)) {
+			if(c.getNome().toLowerCase().contains(nome.toLowerCase())) {
 				if(result == null) result = new ArrayList<Contato>(); 
 				result.add(c);
 			}

@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class TestaLista {
 
@@ -11,8 +12,13 @@ public class TestaLista {
 		lc.addContato(new Contato("Jose", 4, 4, 2000));
 		lc.addContato(new Contato("Lucas", 22, 10, 2010));
 		lc.addContato(new Contato("Mateus", 3, 1, 1950));
+		lc.addContato(new Contato("FátiMa"));
 		
-		System.out.println("\n--- Ordem de insercao ---\n");
+		Scanner teclado = new Scanner (System.in);
+		String busca = teclado.nextLine();
+		System.out.println(lc.search(busca));
+		
+		/*System.out.println("\n--- Ordem de insercao ---\n");
 		for (int i = 0; i < lc.size(); i++) {
 			System.out.println(i + ":" + lc.getContato(i));
 		}
@@ -47,7 +53,7 @@ public class TestaLista {
 		// IDEM loop acima, mas usando o for each 
 		for (Contato c : lc) {
 			System.out.println(c.getNome() + " - " + c.getDataNascString());
-		}
+		}*/
 	}
 
 }
