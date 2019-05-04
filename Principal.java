@@ -1,21 +1,23 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Principal {
 	private static Scanner teclado = new Scanner (System.in);
-	// static, variÃ¡vel de classe
-	//teste teste teste
-
+	
 	public static void main(String[] args) {
 		int opcao;
 
 		Lista lc = Lista.getInstance();
-		lc.addContato(new Contato("Joao", 2, 1, 2000));
-		lc.addContato(new Contato("Maria", 2, 2, 1999));
-		lc.addContato(new Contato("Pedro", 5, 11, 2001));
-		lc.addContato(new Contato("Tiago", 10, 12, 2000));
-		lc.addContato(new Contato("Jose", 4, 4, 2000));
-		lc.addContato(new Contato("Lucas", 22, 10, 2010));
-		lc.addContato(new Contato("Mateus", 3, 1, 1950));
+		lc.testeAddContato(new Contato("Joao", 2, 1, 2000));
+		lc.testeAddContato(new Contato("Maria", 2, 2, 1999));
+		lc.testeAddContato(new Contato("Pedro", 5, 11, 2001));
+		lc.testeAddContato(new Contato("Tiago", 10, 12, 2000));
+		lc.testeAddContato(new Contato("Jose", 4, 4, 2000));
+		lc.testeAddContato(new Contato("Lucas", 22, 10, 2010));
+		lc.testeAddContato(new Contato("Mateus", 3, 1, 1950));
+		Contato teste = new Contato("Juliana", 1, 9, 1996);
+		teste.setCPF("09489104965");
+		lc.testeAddContato(teste);
 		
 		ListaEndereco le = ListaEndereco.getInstance();
 		
@@ -35,53 +37,33 @@ public class Principal {
 					opcao = teclado.nextInt();
 					switch(opcao) {
 					case 1: //add 
-						lc.addContato(new Contato(teclado.nextLine()));
+						lc.addContato();
 						break;
 					case 2: //listar
 						lc.imprimeLista();
 						break;
 					case 3: //ordenar
-						do {
-							System.out.println("1 - A-Z");
-							System.out.println("2 - Z-A");
-							opcao = teclado.nextInt();
-						} while(opcao != 1 && opcao != 2);
-						switch(opcao) {
-						case 1:
-							lc.ordenaAZ();
-							lc.imprimeLista();
-							break;
-						case 2:
-							lc.ordenaZA();
-							lc.imprimeLista();
-							break;
-						}
+						lc.ordenaLista();
+						lc.imprimeLista();
 						break;
-					case 4: //editar
-						String cpf;
-						do {
-							System.out.println("1 - Nome");
-							System.out.println("2 - Data de nascimento");
-							System.out.println("3 - CPF");
-							opcao = teclado.nextInt();
-						} while(opcao < 0 || opcao > 3);
-						do {
-							System.out.print("Digite o CPF do usuário: ");
-							cpf = teclado.nextLine();
-						} while(!lc.existeCpf(cpf));
-						lc.editarContato(opcao, cpf);
+					case 4: // buscar
+						lc.buscaContato();
 						break;
-					case 5: //remover
+					case 5: //editar
+						lc.editarContato();
 						break;
-					case 6: //voltar
+					case 6: //remover
+						lc.removeContato();
+						break;
+					case 7: //voltar
 						menuPrinipal();
 						break;
-					case 7: //sair
+					case 8: //sair
 						System.exit(0);
 					default:
 						System.out.println("Opção inexistente");
 					}
-				} while(opcao != 7 && opcao != 6);
+				} while(opcao != 7 && opcao != 8);
 				break;
 			case 2: 
 				menuSecundario("Endereço");
@@ -91,17 +73,6 @@ public class Principal {
 				break;
 			}
 		} while (opcao!=0);
-	}
-
-	private static Contato lerContato() {
-		String nome;
-		Contato contato;
-		teclado.nextLine(); // para consumir o enter
-		System.out.println("\n--- Novo Contato ---");
-		System.out.print("Nome: ");
-		nome = teclado.nextLine();
-		contato = new Contato(nome);
-		return contato;
 	}
 	
 	private static Endereco lerEndereco() {
@@ -127,10 +98,6 @@ public class Principal {
 		return endereco;
 	}
 	
-	private static void cls() {
-		for(int i = 0; i < 100; i++) System.out.println();
-	}
-	
 	private static void menuPrinipal() {
 		System.out.println("\n--- Menu ---\n");
 		System.out.println("0 - Sair");
@@ -143,10 +110,11 @@ public class Principal {
 		System.out.println("1 - adicionar");
 		System.out.println("2 - listar");
 		System.out.println("3 - ordenar");
-		System.out.println("4 - editar");
-		System.out.println("5 - remover");
-		System.out.println("6 - voltar");
-		System.out.println("7 - sair");
+		System.out.println("4 - buscar");
+		System.out.println("5 - editar");
+		System.out.println("6 - remover");
+		System.out.println("7 - voltar");
+		System.out.println("8 - sair");
 	}
 
 }

@@ -1,9 +1,7 @@
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 
 //teste
 // implements a interface Comparabel exige a implementação do método compareTo
@@ -45,6 +43,17 @@ public class Contato implements Comparable<Contato> {
 		dataNasc = new GregorianCalendar (ano, mes-1, dia);
 	}
 	
+	public boolean validaDataNasc (int dia, int mes, int ano) {
+		GregorianCalendar data = new GregorianCalendar();
+		GregorianCalendar hoje = new GregorianCalendar();
+		if(ano > hoje.get(Calendar.YEAR)) return false;
+		if(mes > 12) return false;
+		data.set(Calendar.MONTH, mes - 1);
+		data.set(Calendar.YEAR, ano);
+		if(dia > data.getActualMaximum(Calendar.DAY_OF_MONTH)) return false;
+		return true;
+	}
+	
 	public int getIdade (){
 		GregorianCalendar dataHoje = new GregorianCalendar(); // data corrente
 		int idade = dataHoje.get(Calendar.YEAR) - dataNasc.get(Calendar.YEAR);
@@ -65,7 +74,8 @@ public class Contato implements Comparable<Contato> {
 	}
 	
 	public String getCPF() {
-		return cpf.toString();
+		if(cpf == null) return "CPF vazio";
+		else return cpf.toString();
 	}
 	
 	public boolean verificaCPF(String cpf) {
@@ -78,7 +88,8 @@ public class Contato implements Comparable<Contato> {
 	}
 	
 	public void setCPF(String cpf) {
-		this.cpf = new CPF(cpf);
+		CPF verificador = new CPF(cpf);
+		if(verificador.isValid()) this.cpf = new CPF(cpf);
 	}
 
 	public String toString() {
