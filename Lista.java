@@ -21,7 +21,7 @@ public class Lista implements Iterable<Contato> {
 		alLista = new ArrayList<Contato>();
 	}
 	
-	public void testeAddContato(Contato contato) {
+	public void addContato(Contato contato) {
 		alLista.add(contato);
 	}
 	
