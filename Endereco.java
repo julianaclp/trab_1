@@ -7,6 +7,7 @@ public class Endereco {
 	// cidade
 	// estado
 	// CEP
+	//Willer
 	
 	private String logradouro;
 	private int numero;
