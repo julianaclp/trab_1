@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+//testando comentário
 public class Principal {
 	private static Scanner teclado = new Scanner (System.in);
 	
