@@ -21,59 +21,39 @@ public class Principal {
 		
 		ListaEndereco le = ListaEndereco.getInstance();
 		
-		menuPrinipal();
+		menu();
 		System.out.print("\nOpcao: ");
 		do {
 			// menu de opcoes contato
 			opcao = teclado.nextInt();
-			
 			// cada opcao chama uma funÃ§Ã£o static da main
 			switch (opcao) {
-			case 0:
-				break;  // system.exit(0);
 			case 1:
-				menuSecundario("Contatos");
-				do {
-					opcao = teclado.nextInt();
-					switch(opcao) {
-					case 1: //add 
-						addContato(lc);
-						break;
-					case 2: //listar
-						lc.imprimeLista();
-						break;
-					case 3: //ordenar
-						ordenaLista(lc);
-						lc.imprimeLista();
-						break;
-					case 4: // buscar
-						//buscaContato(lc);
-						selecionaContato(lc);
-						break;
-					case 5: //editar
-						editarContato(lc);
-						break;
-					case 6: //remover
-						removeContato(lc);
-						break;
-					case 7: //voltar
-						menuPrinipal();
-						break;
-					case 8: //sair
-						System.exit(0);
-					default:
-						System.out.println("Opção inexistente");
-					}
-				} while(opcao != 7 && opcao != 8);
+				addContato(lc);
 				break;
 			case 2: 
-				menuSecundario("Endereço");
+				editarContato(lc);
 				break;
+			case 3:
+				removeContato(lc);
+				break;
+			case 4:
+				ordenaLista(lc);
+				lc.imprimeLista();
+				break;
+			case 5:
+				imprimeAniversariantes(lc);
+				break;
+			case 6:
+				//imprimirEtiquetas(lc);
+				break;
+			case 7:
+				System.exit(0);
 			default:
 				System.out.println("Opcao inexistente");
 				break;
 			}
-		} while (opcao!=0);
+		} while (opcao != 7);
 	}
 	
 	private static Endereco lerEndereco() {
@@ -99,32 +79,23 @@ public class Principal {
 		return endereco;
 	}
 	
-	private static void menuPrinipal() {
+	private static void menu() {
 		System.out.println("\n--- Menu ---\n");
-		System.out.println("0 - Sair");
-		System.out.println("1 - Menu contatos");
-		System.out.println("2 - Menu endereço");
+		System.out.println("1 - Adicionar contato");
+		System.out.println("2 - Editar contato");
+		System.out.println("3 - Excluir contato");
+		System.out.println("4 - Ordenar");
+		System.out.println("5 - Imprimir lista de aniversariantes");
+		System.out.println("6 - Imprimir etiquetas");
+		System.out.println("7 - Sair");
 	}
 	
-	private static void menuSecundario(String tipo) {
-		System.out.println("\n--- " + tipo + " ---\n");
-		System.out.println("1 - adicionar");
-		System.out.println("2 - listar");
-		System.out.println("3 - ordenar");
-		System.out.println("4 - buscar");
-		System.out.println("5 - editar");
-		System.out.println("6 - remover");
-		System.out.println("7 - voltar");
-		System.out.println("8 - sair");
-	}
-	
-	//--------------MENU CONTATOS--------------
 	private static void addContato(Lista l){
 		Contato contato;
 		int dia; 
 		int mes;
 		int ano;
-		String cpf;
+		CPF cpf;
 		boolean flag = false;
 		Scanner teclado = new Scanner(System.in);
 		System.out.print("Digite o nome do contato: ");
@@ -145,10 +116,10 @@ public class Principal {
 		do {
 			if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente.");
 			System.out.print("Digite o CPF: ");
-			cpf = teclado.nextLine();
+			cpf = new CPF(teclado.nextLine());
 			flag = true;
-		} while(!contato.verificaCPF(cpf));
-		contato.setCPF(cpf);
+		} while(!cpf.isValid());
+		contato.setCPF(cpf.toString());
 		l.addContato(contato);
 	}
 	
@@ -158,7 +129,7 @@ public class Principal {
 		boolean flag = false;
 		boolean success = false;
 		Scanner teclado = new Scanner(System.in);
-		int contato = selecionaContato(l);
+		int contato = l.selecionaContato();
 		System.out.println("Informe o dado que deseja alterar: ");
 		do {
 			if(flag) System.out.println("Opção inválida! Verifique os dados e digite novamente.");
@@ -212,18 +183,6 @@ public class Principal {
 		if(success) System.out.println("Contato alterado com sucesso!");
 	}
 	
-	private static void buscaContato(Lista l) {
-		String busca;
-		Scanner teclado = new Scanner(System.in);
-		do {
-			System.out.print("Digite a busca: ");
-			busca = teclado.nextLine();
-		} while(busca == null || busca.length() == 0);
-		ArrayList<Contato> resultado = l.search(busca);
-		if(resultado == null) System.out.println("Contato inexistente");
-		else System.out.println(resultado);
-	}
-	
 	private static void ordenaLista(Lista l) {
 		int opcao;
 		Scanner teclado = new Scanner(System.in);
@@ -248,33 +207,12 @@ public class Principal {
 	private static void removeContato(Lista l) {
 		boolean flag = false;
 		int selecao;
-		int contato = selecionaContato(l);
+		int contato = l.selecionaContato();
 		l.removeContato(contato);
 	}
 	
-	private static int selecionaContato(Lista l) {
-		ArrayList<Integer> contatos = null;
-		Scanner teclado = new Scanner(System.in);
-		boolean flag = false;
-		int selecao;
-		do {
-			if(flag) System.out.println("Contato inexistente! Verifique os dados e digite novamente.");
-			System.out.print("Digite o nome do contato: ");
-			contatos = l.searchInt(teclado.nextLine());
-			flag = true;
-		} while(contatos.size() == 0);
-		flag = false;
-		if(contatos.size() == 1) return contatos.get(0);
-		do {
-			if(flag) System.out.println("Opção indisponível. Verifique os dados e digite novamente.");
-			System.out.println("Mais de uma opção disponível. Escolha o número do contato: ");
-			for(int i : contatos) {
-				System.out.println(i + " - " + l.getContato(i));
-			}
-			selecao = teclado.nextInt();
-			flag = true;
-		} while(!contatos.contains(selecao));
-		return selecao;
+	private static void imprimeAniversariantes(Lista l) {
+		l.imprimeAniversariantes();
 	}
 
 }

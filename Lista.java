@@ -41,33 +41,6 @@ public class Lista implements Iterable<Contato> {
 		return alLista.size();
 	}
 	
-	public boolean existeContato(String nome) {
-		boolean existe = false;
-		for(Contato c : alLista) {
-			if(nome.equalsIgnoreCase(c.getNome())) existe = true;
-		}
-		return existe;
-	}
-	
-	public boolean existeCpf(String cpf) {
-		boolean existe = false;
-		for(Contato c : alLista) {
-			if(cpf.equals(c.getCPF())) existe = true;
-		}
-		return existe;
-	}
-	
-	public int getIndex(String cpf) {
-		int index = -1;
-		if(this.existeCpf(cpf)) {
-			for(int i = 0; i < this.size(); i++) {
-				Contato c = this.getContato(i);
-				if(cpf.equals(c.getCPF())) index = i;
-			}
-		}
-		return index;
-	}
-	
 	public void ordenaAZ(){
 		Collections.sort(alLista);
 	}
@@ -87,18 +60,7 @@ public class Lista implements Iterable<Contato> {
 			}
 		});
 	}
-	
-	public ArrayList<Contato> search(String nome) {
-		ArrayList<Contato> result = null;
-		for(Contato c : alLista) {
-			if(c.getNome().toLowerCase().contains(nome.toLowerCase())) {
-				if(result == null) result = new ArrayList<Contato>(); 
-				result.add(c);
-			}
-		}
-		return result;
-	}
-	
+		
 	public ArrayList<Integer> searchInt(String nome) {
 		ArrayList<Integer> result = null;
 		for(int i = 0; i < alLista.size(); i ++) {
@@ -108,6 +70,31 @@ public class Lista implements Iterable<Contato> {
 			}
 		}
 		return result;
+	}
+	
+	public int selecionaContato() {
+		ArrayList<Integer> contatos = null;
+		Scanner teclado = new Scanner(System.in);
+		boolean flag = false;
+		int selecao;
+		do {
+			if(flag) System.out.println("Contato inexistente! Verifique os dados e digite novamente.");
+			System.out.print("Digite o nome do contato: ");
+			contatos = this.searchInt(teclado.nextLine());
+			flag = true;
+		} while(contatos.size() == 0);
+		flag = false;
+		if(contatos.size() == 1) return contatos.get(0);
+		do {
+			if(flag) System.out.println("Opção indisponível. Verifique os dados e digite novamente.");
+			System.out.println("Mais de uma opção disponível. Escolha o número do contato: ");
+			for(int i : contatos) {
+				System.out.println(i + " - " + this.getContato(i));
+			}
+			selecao = teclado.nextInt();
+			flag = true;
+		} while(!contatos.contains(selecao));
+		return selecao;
 	}
 	
 	public boolean editarNome(int i, String nome) {
