@@ -25,6 +25,10 @@ public class Lista implements Iterable<Contato> {
 		alLista.add(contato);
 	}
 	
+	public void removeContato(int i) {
+		alLista.remove(i);
+	}
+	
 	public Contato getContato(int i){
 		return alLista.get(i);
 	}
@@ -74,7 +78,7 @@ public class Lista implements Iterable<Contato> {
 	
 	public void ordenaAniversarioJanDez(){
 		Collections.sort(alLista, new Comparator<Contato>() {
-			// aqui dentro vem a classe anÃ´nima
+			// aqui dentro vem a classe anônima
 			@Override
 			public int compare(Contato c1, Contato c2) {
 				int diaC1 = c1.getDataNasc().get(Calendar.DAY_OF_YEAR);
@@ -93,6 +97,67 @@ public class Lista implements Iterable<Contato> {
 			}
 		}
 		return result;
+	}
+	
+	public ArrayList<Integer> searchInt(String nome) {
+		ArrayList<Integer> result = null;
+		for(int i = 0; i < alLista.size(); i ++) {
+			if(alLista.get(i).getNome().toLowerCase().contains(nome.toLowerCase())) {
+				if(result == null) result = new ArrayList<Integer>(); 
+				result.add(i);
+			}
+		}
+		return result;
+	}
+	
+	public boolean editarNome(int i, String nome) {
+		if(nome.length() == 0) return false;
+		this.getContato(i).setNome(nome);
+		return true;
+	}
+	
+	public boolean editarDataNasc(int i, int dia, int mes, int ano) {
+		if(!this.getContato(i).validaDataNasc(dia, mes, ano)) return false;
+		this.getContato(i).setDataNasc(dia, mes, ano);
+		return true;
+	}
+	
+	public boolean editarCPF(int i, String cpf) {
+		CPF novoCPF = new CPF(cpf);
+		if(!novoCPF.isValid()) return false;
+		this.getContato(i).setCPF(cpf);
+		return true;
+	}
+	
+	public void imprimeAniversariantes() {
+		this.ordenaAniversarioJanDez();
+		int mes = 0;
+		int i = 0;
+		String[] meses = {"JANEIRO", 
+				"FEVEREIRO",
+				"MARÇO",
+				"ABRIL",
+				"MAIO",
+				"JUNHO",
+				"JULHO",
+				"AGOSTO",
+				"SETEMBRO",
+				"OUTUBRO",
+				"NOVEMBRO",
+				"DEZEMBRO"};
+		while(i < this.size()) {
+			Contato c = this.getContato(i);
+			if(i == 0 && mes == 0) System.out.println(meses[mes]);
+			if(c.getDataNasc().get(Calendar.MONTH) == mes) {
+				System.out.println(c.getNome() + " - " + c.getDataNascString());
+				i++;
+			}
+			else {
+				mes++;
+				System.out.println();
+				System.out.println(meses[mes]);
+			}
+		}
 	}
 	
 	@Override

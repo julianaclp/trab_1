@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+//testando comentário
 public class Principal {
 	private static Scanner teclado = new Scanner (System.in);
 	
@@ -47,7 +47,8 @@ public class Principal {
 						lc.imprimeLista();
 						break;
 					case 4: // buscar
-						buscaContato(lc);
+						//buscaContato(lc);
+						selecionaContato(lc);
 						break;
 					case 5: //editar
 						editarContato(lc);
@@ -149,14 +150,16 @@ public class Principal {
 		} while(!contato.verificaCPF(cpf));
 		contato.setCPF(cpf);
 		l.addContato(contato);
-		teclado.close();
 	}
 	
 	private static void editarContato(Lista l) {
 		String cpf;
 		int opcao;
 		boolean flag = false;
+		boolean success = false;
 		Scanner teclado = new Scanner(System.in);
+		int contato = selecionaContato(l);
+		System.out.println("Informe o dado que deseja alterar: ");
 		do {
 			if(flag) System.out.println("Opção inválida! Verifique os dados e digite novamente.");
 			System.out.println("1 - Nome");
@@ -167,18 +170,14 @@ public class Principal {
 		} while(opcao < 0 || opcao > 3);
 		teclado.nextLine();
 		flag = false;
-		do {
-			if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente.");
-			System.out.print("Digite o CPF do contato: ");
-			cpf = teclado.nextLine();
-			flag = true;
-		} while(!l.existeCpf(cpf));
-		flag = false;
-		int index = l.getIndex(cpf);
 		switch(opcao) {
 		case 1:
-			System.out.print("Digite o novo nome: ");
-			l.getContato(index).setNome(teclado.nextLine());
+			do {
+				if(flag) System.out.println("Nome inválido! Verifique os dados e digite novamente.");
+				System.out.print("Digite o novo nome: ");
+				success = l.editarNome(contato, teclado.nextLine());
+				flag = true;
+			} while(!success);
 			break;
 		case 2:
 			int dia;
@@ -194,24 +193,23 @@ public class Principal {
 				System.out.print("Digite o ano: ");
 				ano = teclado.nextInt();
 				flag = true;
-			} while(!l.getContato(index).validaDataNasc(dia, mes, ano));
-			l.getContato(index).setDataNasc(dia, mes, ano);
+				success = l.editarDataNasc(contato, dia, mes, ano);
+			} while(!success);
 			break;
 		case 3:
-			CPF novoCPF; 
 			flag = false;
 			do {
 				if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente!");
 				System.out.print("Digite o CPF: ");
-				novoCPF = new CPF(teclado.nextLine());
+				cpf = teclado.nextLine();
 				flag = true;
-			} while(!novoCPF.isValid());
-			l.getContato(index).setCPF(novoCPF.toString());
+				success = l.editarCPF(contato, cpf);
+			} while(!success);
 			break;
 		default:
 			System.out.println("Campo inexistente");
 		}
-		teclado.close();
+		if(success) System.out.println("Contato alterado com sucesso!");
 	}
 	
 	private static void buscaContato(Lista l) {
@@ -224,7 +222,6 @@ public class Principal {
 		ArrayList<Contato> resultado = l.search(busca);
 		if(resultado == null) System.out.println("Contato inexistente");
 		else System.out.println(resultado);
-		teclado.close();
 	}
 	
 	private static void ordenaLista(Lista l) {
@@ -235,10 +232,9 @@ public class Principal {
 			if(flag) System.out.println("Opção inválida! Verifique os dados e digite novamente.");
 			System.out.println("1 - A-Z");
 			System.out.println("2 - Z-A");
-			System.out.println("3 - Data de aniversário");
 			opcao = teclado.nextInt();
 			flag = true;
-		} while(opcao < 1 || opcao > 3);
+		} while(opcao < 1 || opcao > 2);
 		switch(opcao) {
 		case 1:
 			l.ordenaAZ();
@@ -246,25 +242,39 @@ public class Principal {
 		case 2:
 			l.ordenaZA();
 			break;
-		case 3:
-			l.ordenaAniversarioJanDez();
-			break;
 		}
-		teclado.close();
 	}
 	
 	private static void removeContato(Lista l) {
-		String cpf;
+		boolean flag = false;
+		int selecao;
+		int contato = selecionaContato(l);
+		l.removeContato(contato);
+	}
+	
+	private static int selecionaContato(Lista l) {
+		ArrayList<Integer> contatos = null;
 		Scanner teclado = new Scanner(System.in);
 		boolean flag = false;
+		int selecao;
 		do {
-			if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente.");
-			System.out.print("Digite o CPF do contato: ");
-			cpf = teclado.nextLine();
+			if(flag) System.out.println("Contato inexistente! Verifique os dados e digite novamente.");
+			System.out.print("Digite o nome do contato: ");
+			contatos = l.searchInt(teclado.nextLine());
 			flag = true;
-		} while(!l.existeCpf(cpf));
-		l.getLista().remove(l.getIndex(cpf));
-		teclado.close();
+		} while(contatos.size() == 0);
+		flag = false;
+		if(contatos.size() == 1) return contatos.get(0);
+		do {
+			if(flag) System.out.println("Opção indisponível. Verifique os dados e digite novamente.");
+			System.out.println("Mais de uma opção disponível. Escolha o número do contato: ");
+			for(int i : contatos) {
+				System.out.println(i + " - " + l.getContato(i));
+			}
+			selecao = teclado.nextInt();
+			flag = true;
+		} while(!contatos.contains(selecao));
+		return selecao;
 	}
 
 }
