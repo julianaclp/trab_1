@@ -9,7 +9,7 @@ public class ListaEndereco implements Iterable<Endereco> {
 	
 	private ArrayList<Endereco> alListaEndereco = null;
 	private static ListaEndereco minhaListaEndereco;
-	private String nome;
+	
 	
 	public static ListaEndereco getInstance(){
 		if (minhaListaEndereco == null)
@@ -31,23 +31,13 @@ public class ListaEndereco implements Iterable<Endereco> {
 		return alListaEndereco.iterator();
 	}
 	
-	public Endereco buscaEndereco(String nome)){
+	public Endereco buscaEndereco(int selecao)){
 		
 		return alListaEndereco.get(i);
 	}
 	
 	public void removeEndereco(int i){
 		alListaEndereco.remove(i);
-		public int getIndex(String endereco) {
-			int index = -1;
-			if(this.existeCpf(cpf)) {
-				for(int i = 0; i < this.size(); i++) {
-					Contato c = this.getContato(i);
-					if(cpf.equals(c.getCPF())) index = i;
-				}
-			}
-			return index;
-		}
 	}
 	
 }

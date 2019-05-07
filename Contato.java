@@ -1,5 +1,6 @@
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -11,8 +12,9 @@ public class Contato implements Comparable<Contato> {
 	private String nome;
 	private GregorianCalendar dataNasc;
 	private CPF cpf;
+	
 	//private String cpf; ou então atributo CPF, depende de como será a classe 
-	//private ArrayList<Endereco> alEndereco;
+	private ListaEndereco alEndereco = ListaEndereco.getInstance();
 	
 	public Contato(String nome) {
 		super();

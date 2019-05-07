@@ -19,6 +19,10 @@ public class Endereco {
 		this.CEP = CEP;
 		this.complemento = complemento;
 	}
+		public Endereco(String ID) {
+			super();
+			this.ID = ID;
+	}
 	public String getLogradouro() {
 		return logradouro;
 	}

@@ -6,7 +6,6 @@ public class Principal {
 	
 	public static void main(String[] args) {
 		int opcao;
-
 		Lista lc = Lista.getInstance();
 		lc.addContato(new Contato("Joao", 2, 1, 2000));
 		lc.addContato(new Contato("Maria", 2, 2, 1999));
@@ -92,6 +91,8 @@ public class Principal {
 	
 	private static void addContato(Lista l){
 		Contato contato;
+		Endereco endereco;
+		int opcao;
 		int dia; 
 		int mes;
 		int ano;
@@ -120,6 +121,20 @@ public class Principal {
 			flag = true;
 		} while(!cpf.isValid());
 		contato.setCPF(cpf.toString());
+		System.out.println("Deseja adicionar um endereço");
+		do {
+			opcao = teclado.nextInt();
+			switch (opcao) {
+			case 1:
+				System.out.println("Digite o tipo do endereço(Ex: Casa, trabalho...): ");
+				endereco = new Endereco(teclado.nextLine());
+				System.out.println("Digite o logradouro: ");
+				endereco.setLogradouro(teclado.nextLine());
+				break;
+			case 2:
+				break;
+			} while (opcao != 7);
+		}
 		l.addContato(contato);
 	}
 	
