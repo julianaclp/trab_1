@@ -18,7 +18,7 @@ public class Contato implements Comparable<Contato> {
 		super();
 		this.nome = nome;
 	}
-	//Rodrifo 
+	
 	public Contato(String nome, GregorianCalendar dataNasc) {
 		super();
 		this.nome = nome;

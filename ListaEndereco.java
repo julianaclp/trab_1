@@ -9,6 +9,7 @@ public class ListaEndereco implements Iterable<Endereco> {
 	
 	private ArrayList<Endereco> alListaEndereco = null;
 	private static ListaEndereco minhaListaEndereco;
+	private String nome;
 	
 	public static ListaEndereco getInstance(){
 		if (minhaListaEndereco == null)
@@ -27,44 +28,26 @@ public class ListaEndereco implements Iterable<Endereco> {
 
 	@Override
 	public Iterator<Endereco> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return alListaEndereco.iterator();
 	}
-
-	public void addContato(Contato lerContato) {
-		// TODO Auto-generated method stub
+	
+	public Endereco buscaEndereco(String nome)){
 		
+		return alListaEndereco.get(i);
 	}
 	
-/*	public Contato getContato(int i){
-		return alLista.get(i);
+	public void removeEndereco(int i){
+		alListaEndereco.remove(i);
+		public int getIndex(String endereco) {
+			int index = -1;
+			if(this.existeCpf(cpf)) {
+				for(int i = 0; i < this.size(); i++) {
+					Contato c = this.getContato(i);
+					if(cpf.equals(c.getCPF())) index = i;
+				}
+			}
+			return index;
+		}
 	}
 	
-	public void removeContato(int i){
-		alLista.remove(i);
-	}
-	
-	public int size(){
-		return alLista.size();
-	}
-	
-	// método sort usará compareTo da Contato e ordenará o ArrayList alLista
-	// pela ordem natural definida na classe Contato (no caso, o atributo nome)
-	public void ordenaAZ(){
-		Collections.sort(alLista);
-	}
-	
-	public void ordenaZA(){
-		Collections.sort(alLista, Collections.reverseOrder());
-	}
-	@Override
-	public String toString() {
-		return "Lista [alLista=" + alLista.toString() + "]";
-	}
-
-	@Override
-	public Iterator<Contato> iterator() {
-		return alLista.iterator();
-	}	
-*/
 }
