@@ -54,16 +54,6 @@ public class Contato implements Comparable<Contato> {
 		return true;
 	}
 	
-	public int getIdade (){
-		GregorianCalendar dataHoje = new GregorianCalendar(); // data corrente
-		int idade = dataHoje.get(Calendar.YEAR) - dataNasc.get(Calendar.YEAR);
-		
-		if (dataNasc.get(Calendar.DAY_OF_YEAR) > dataHoje.get(Calendar.DAY_OF_YEAR)) {
-			idade--;
-		}
-		return idade;
-	}
-	
 	public String getDataNascString (){
 		SimpleDateFormat data = new SimpleDateFormat ("dd/MM/yyyy");
 		return data.format(dataNasc.getTime());
@@ -76,15 +66,6 @@ public class Contato implements Comparable<Contato> {
 	public String getCPF() {
 		if(cpf == null) return "CPF vazio";
 		else return cpf.toString();
-	}
-	
-	public boolean verificaCPF(String cpf) {
-		CPF verificador = new CPF(cpf);
-		if(verificador.isValid()) {
-			setCPF(cpf);
-			return true;
-		}
-		else return false;
 	}
 	
 	public void setCPF(String cpf) {

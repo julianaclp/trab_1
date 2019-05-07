@@ -21,58 +21,39 @@ public class Principal {
 		
 		ListaEndereco le = ListaEndereco.getInstance();
 		
-		menuPrinipal();
+		menu();
 		System.out.print("\nOpcao: ");
 		do {
 			// menu de opcoes contato
 			opcao = teclado.nextInt();
-			
 			// cada opcao chama uma funÃ§Ã£o static da main
 			switch (opcao) {
-			case 0:
-				break;  // system.exit(0);
 			case 1:
-				menuSecundario("Contatos");
-				do {
-					opcao = teclado.nextInt();
-					switch(opcao) {
-					case 1: //add 
-						addContato(lc);
-						break;
-					case 2: //listar
-						lc.imprimeLista();
-						break;
-					case 3: //ordenar
-						ordenaLista(lc);
-						lc.imprimeLista();
-						break;
-					case 4: // buscar
-						buscaContato(lc);
-						break;
-					case 5: //editar
-						editarContato(lc);
-						break;
-					case 6: //remover
-						removeContato(lc);
-						break;
-					case 7: //voltar
-						menuPrinipal();
-						break;
-					case 8: //sair
-						System.exit(0);
-					default:
-						System.out.println("Opção inexistente");
-					}
-				} while(opcao != 7 && opcao != 8);
+				addContato(lc);
 				break;
 			case 2: 
-				menuSecundario("Endereço");
+				editarContato(lc);
 				break;
+			case 3:
+				removeContato(lc);
+				break;
+			case 4:
+				ordenaLista(lc);
+				lc.imprimeLista();
+				break;
+			case 5:
+				imprimeAniversariantes(lc);
+				break;
+			case 6:
+				//imprimirEtiquetas(lc);
+				break;
+			case 7:
+				System.exit(0);
 			default:
 				System.out.println("Opcao inexistente");
 				break;
 			}
-		} while (opcao!=0);
+		} while (opcao != 7);
 	}
 	
 	private static Endereco lerEndereco() {
@@ -98,32 +79,23 @@ public class Principal {
 		return endereco;
 	}
 	
-	private static void menuPrinipal() {
+	private static void menu() {
 		System.out.println("\n--- Menu ---\n");
-		System.out.println("0 - Sair");
-		System.out.println("1 - Menu contatos");
-		System.out.println("2 - Menu endereço");
+		System.out.println("1 - Adicionar contato");
+		System.out.println("2 - Editar contato");
+		System.out.println("3 - Excluir contato");
+		System.out.println("4 - Ordenar");
+		System.out.println("5 - Imprimir lista de aniversariantes");
+		System.out.println("6 - Imprimir etiquetas");
+		System.out.println("7 - Sair");
 	}
 	
-	private static void menuSecundario(String tipo) {
-		System.out.println("\n--- " + tipo + " ---\n");
-		System.out.println("1 - adicionar");
-		System.out.println("2 - listar");
-		System.out.println("3 - ordenar");
-		System.out.println("4 - buscar");
-		System.out.println("5 - editar");
-		System.out.println("6 - remover");
-		System.out.println("7 - voltar");
-		System.out.println("8 - sair");
-	}
-	
-	//--------------MENU CONTATOS--------------
 	private static void addContato(Lista l){
 		Contato contato;
 		int dia; 
 		int mes;
 		int ano;
-		String cpf;
+		CPF cpf;
 		boolean flag = false;
 		Scanner teclado = new Scanner(System.in);
 		System.out.print("Digite o nome do contato: ");
@@ -144,19 +116,21 @@ public class Principal {
 		do {
 			if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente.");
 			System.out.print("Digite o CPF: ");
-			cpf = teclado.nextLine();
+			cpf = new CPF(teclado.nextLine());
 			flag = true;
-		} while(!contato.verificaCPF(cpf));
-		contato.setCPF(cpf);
+		} while(!cpf.isValid());
+		contato.setCPF(cpf.toString());
 		l.addContato(contato);
-		teclado.close();
 	}
 	
 	private static void editarContato(Lista l) {
 		String cpf;
 		int opcao;
 		boolean flag = false;
+		boolean success = false;
 		Scanner teclado = new Scanner(System.in);
+		int contato = l.selecionaContato();
+		System.out.println("Informe o dado que deseja alterar: ");
 		do {
 			if(flag) System.out.println("Opção inválida! Verifique os dados e digite novamente.");
 			System.out.println("1 - Nome");
@@ -167,18 +141,14 @@ public class Principal {
 		} while(opcao < 0 || opcao > 3);
 		teclado.nextLine();
 		flag = false;
-		do {
-			if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente.");
-			System.out.print("Digite o CPF do contato: ");
-			cpf = teclado.nextLine();
-			flag = true;
-		} while(!l.existeCpf(cpf));
-		flag = false;
-		int index = l.getIndex(cpf);
 		switch(opcao) {
 		case 1:
-			System.out.print("Digite o novo nome: ");
-			l.getContato(index).setNome(teclado.nextLine());
+			do {
+				if(flag) System.out.println("Nome inválido! Verifique os dados e digite novamente.");
+				System.out.print("Digite o novo nome: ");
+				success = l.editarNome(contato, teclado.nextLine());
+				flag = true;
+			} while(!success);
 			break;
 		case 2:
 			int dia;
@@ -194,37 +164,23 @@ public class Principal {
 				System.out.print("Digite o ano: ");
 				ano = teclado.nextInt();
 				flag = true;
-			} while(!l.getContato(index).validaDataNasc(dia, mes, ano));
-			l.getContato(index).setDataNasc(dia, mes, ano);
+				success = l.editarDataNasc(contato, dia, mes, ano);
+			} while(!success);
 			break;
 		case 3:
-			CPF novoCPF; 
 			flag = false;
 			do {
 				if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente!");
 				System.out.print("Digite o CPF: ");
-				novoCPF = new CPF(teclado.nextLine());
+				cpf = teclado.nextLine();
 				flag = true;
-			} while(!novoCPF.isValid());
-			l.getContato(index).setCPF(novoCPF.toString());
+				success = l.editarCPF(contato, cpf);
+			} while(!success);
 			break;
 		default:
 			System.out.println("Campo inexistente");
 		}
-		teclado.close();
-	}
-	
-	private static void buscaContato(Lista l) {
-		String busca;
-		Scanner teclado = new Scanner(System.in);
-		do {
-			System.out.print("Digite a busca: ");
-			busca = teclado.nextLine();
-		} while(busca == null || busca.length() == 0);
-		ArrayList<Contato> resultado = l.search(busca);
-		if(resultado == null) System.out.println("Contato inexistente");
-		else System.out.println(resultado);
-		teclado.close();
+		if(success) System.out.println("Contato alterado com sucesso!");
 	}
 	
 	private static void ordenaLista(Lista l) {
@@ -235,10 +191,9 @@ public class Principal {
 			if(flag) System.out.println("Opção inválida! Verifique os dados e digite novamente.");
 			System.out.println("1 - A-Z");
 			System.out.println("2 - Z-A");
-			System.out.println("3 - Data de aniversário");
 			opcao = teclado.nextInt();
 			flag = true;
-		} while(opcao < 1 || opcao > 3);
+		} while(opcao < 1 || opcao > 2);
 		switch(opcao) {
 		case 1:
 			l.ordenaAZ();
@@ -246,25 +201,18 @@ public class Principal {
 		case 2:
 			l.ordenaZA();
 			break;
-		case 3:
-			l.ordenaAniversarioJanDez();
-			break;
 		}
-		teclado.close();
 	}
 	
 	private static void removeContato(Lista l) {
-		String cpf;
-		Scanner teclado = new Scanner(System.in);
 		boolean flag = false;
-		do {
-			if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente.");
-			System.out.print("Digite o CPF do contato: ");
-			cpf = teclado.nextLine();
-			flag = true;
-		} while(!l.existeCpf(cpf));
-		l.getLista().remove(l.getIndex(cpf));
-		teclado.close();
+		int selecao;
+		int contato = l.selecionaContato();
+		l.removeContato(contato);
+	}
+	
+	private static void imprimeAniversariantes(Lista l) {
+		l.imprimeAniversariantes();
 	}
 
 }

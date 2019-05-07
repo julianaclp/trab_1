@@ -25,6 +25,10 @@ public class Lista implements Iterable<Contato> {
 		alLista.add(contato);
 	}
 	
+	public void removeContato(int i) {
+		alLista.remove(i);
+	}
+	
 	public Contato getContato(int i){
 		return alLista.get(i);
 	}
@@ -37,33 +41,6 @@ public class Lista implements Iterable<Contato> {
 		return alLista.size();
 	}
 	
-	public boolean existeContato(String nome) {
-		boolean existe = false;
-		for(Contato c : alLista) {
-			if(nome.equalsIgnoreCase(c.getNome())) existe = true;
-		}
-		return existe;
-	}
-	
-	public boolean existeCpf(String cpf) {
-		boolean existe = false;
-		for(Contato c : alLista) {
-			if(cpf.equals(c.getCPF())) existe = true;
-		}
-		return existe;
-	}
-	
-	public int getIndex(String cpf) {
-		int index = -1;
-		if(this.existeCpf(cpf)) {
-			for(int i = 0; i < this.size(); i++) {
-				Contato c = this.getContato(i);
-				if(cpf.equals(c.getCPF())) index = i;
-			}
-		}
-		return index;
-	}
-	
 	public void ordenaAZ(){
 		Collections.sort(alLista);
 	}
@@ -74,7 +51,7 @@ public class Lista implements Iterable<Contato> {
 	
 	public void ordenaAniversarioJanDez(){
 		Collections.sort(alLista, new Comparator<Contato>() {
-			// aqui dentro vem a classe anÃ´nima
+			// aqui dentro vem a classe anônima
 			@Override
 			public int compare(Contato c1, Contato c2) {
 				int diaC1 = c1.getDataNasc().get(Calendar.DAY_OF_YEAR);
@@ -83,16 +60,91 @@ public class Lista implements Iterable<Contato> {
 			}
 		});
 	}
-	
-	public ArrayList<Contato> search(String nome) {
-		ArrayList<Contato> result = null;
-		for(Contato c : alLista) {
-			if(c.getNome().toLowerCase().contains(nome.toLowerCase())) {
-				if(result == null) result = new ArrayList<Contato>(); 
-				result.add(c);
+		
+	public ArrayList<Integer> searchInt(String nome) {
+		ArrayList<Integer> result = null;
+		for(int i = 0; i < alLista.size(); i ++) {
+			if(alLista.get(i).getNome().toLowerCase().contains(nome.toLowerCase())) {
+				if(result == null) result = new ArrayList<Integer>(); 
+				result.add(i);
 			}
 		}
 		return result;
+	}
+	
+	public int selecionaContato() {
+		ArrayList<Integer> contatos = null;
+		Scanner teclado = new Scanner(System.in);
+		boolean flag = false;
+		int selecao;
+		do {
+			if(flag) System.out.println("Contato inexistente! Verifique os dados e digite novamente.");
+			System.out.print("Digite o nome do contato: ");
+			contatos = this.searchInt(teclado.nextLine());
+			flag = true;
+		} while(contatos.size() == 0);
+		flag = false;
+		if(contatos.size() == 1) return contatos.get(0);
+		do {
+			if(flag) System.out.println("Opção indisponível. Verifique os dados e digite novamente.");
+			System.out.println("Mais de uma opção disponível. Escolha o número do contato: ");
+			for(int i : contatos) {
+				System.out.println(i + " - " + this.getContato(i));
+			}
+			selecao = teclado.nextInt();
+			flag = true;
+		} while(!contatos.contains(selecao));
+		return selecao;
+	}
+	
+	public boolean editarNome(int i, String nome) {
+		if(nome.length() == 0) return false;
+		this.getContato(i).setNome(nome);
+		return true;
+	}
+	
+	public boolean editarDataNasc(int i, int dia, int mes, int ano) {
+		if(!this.getContato(i).validaDataNasc(dia, mes, ano)) return false;
+		this.getContato(i).setDataNasc(dia, mes, ano);
+		return true;
+	}
+	
+	public boolean editarCPF(int i, String cpf) {
+		CPF novoCPF = new CPF(cpf);
+		if(!novoCPF.isValid()) return false;
+		this.getContato(i).setCPF(cpf);
+		return true;
+	}
+	
+	public void imprimeAniversariantes() {
+		this.ordenaAniversarioJanDez();
+		int mes = 0;
+		int i = 0;
+		String[] meses = {"JANEIRO", 
+				"FEVEREIRO",
+				"MARÇO",
+				"ABRIL",
+				"MAIO",
+				"JUNHO",
+				"JULHO",
+				"AGOSTO",
+				"SETEMBRO",
+				"OUTUBRO",
+				"NOVEMBRO",
+				"DEZEMBRO"};
+		while(i < this.size()) {
+			Contato c = this.getContato(i);
+			if(i == 0 && mes == 0) System.out.println(meses[mes]);
+			if(c.getDataNasc().get(Calendar.MONTH) == mes) {
+				System.out.println(c.getNome() + " - " + c.getDataNascString());
+				i++;
+			}
+			else {
+				mes++;
+				System.out.println();
+				System.out.println(meses[mes]);
+			}
+		}
 	}
 	
 	@Override
