@@ -36,6 +36,10 @@ public class Contato implements Comparable<Contato> {
 	public String getNome() {
 		return nome; 
 	}
+	
+	public ListaEndereco getListaEndereco() {
+		return alEndereco;
+	}
 
 	public void setNome(String nome) {
 		this.nome = nome;

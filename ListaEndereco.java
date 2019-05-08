@@ -31,12 +31,15 @@ public class ListaEndereco implements Iterable<Endereco> {
 		return alListaEndereco.iterator();
 	}
 	
-	public Endereco buscaEndereco(int selecao){
-		return alListaEndereco.get(selecao);
-	}
-	
 	public void removeEndereco(int i){
 		alListaEndereco.remove(i);
 	}
 	
+	public int size(){
+		return alListaEndereco.size();
+	}
+	
+	public Endereco getEndereco(int i) {
+		return alListaEndereco.get(i);
+	}
 }

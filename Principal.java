@@ -55,29 +55,6 @@ public class Principal {
 		} while (opcao != 7);
 	}
 	
-	private static Endereco lerEndereco() {
-		boolean numeric = false;
-		String logradouro;
-		Endereco endereco;
-		teclado.nextLine(); // para consumir o enter
-		System.out.println("\n--- Novo Endereco ---");
-		System.out.print("Logradouro: ");
-		logradouro = teclado.nextLine();
-		do {
-			try {
-	            Double num = Double.parseDouble(logradouro);
-	        } catch (NumberFormatException e) {
-	            numeric = false;
-	        }
-		 if(numeric) {
-			 System.out.println("Por favor digitar o nome da rua");
-		 }
-		} while(numeric);
-		
-		endereco = new Endereco(logradouro);
-		return endereco;
-	}
-	
 	private static void menu() {
 		System.out.println("\n--- Menu ---\n");
 		System.out.println("1 - Adicionar contato");
@@ -101,7 +78,7 @@ public class Principal {
 		Scanner teclado = new Scanner(System.in);
 		System.out.print("Digite o nome do contato: ");
 		contato = new Contato(teclado.nextLine());
-		System.out.println("Data de nascimento:");
+		System.out.println("Data de nascimento");
 		do {
 			if(flag) System.out.println("Data inválida! Verifique os dados e digite novamente.");
 			System.out.print("Digite o dia: ");
@@ -114,6 +91,7 @@ public class Principal {
 		} while(!contato.validaDataNasc(dia, mes, ano));
 		contato.setDataNasc(dia, mes, ano);
 		flag = false;
+		teclado.nextLine();
 		do {
 			if(flag) System.out.println("CPF inválido! Verifique os dados e digite novamente.");
 			System.out.print("Digite o CPF: ");
@@ -121,20 +99,18 @@ public class Principal {
 			flag = true;
 		} while(!cpf.isValid());
 		contato.setCPF(cpf.toString());
-		System.out.println("Deseja adicionar um endereço");
+		System.out.println("Deseja adicionar um endereço?");
 		do {
+			System.out.println("1 - Sim \n2 - Não" );
 			opcao = teclado.nextInt();
 			switch (opcao) {
 			case 1:
-				System.out.println("Digite o tipo do endereço(Ex: Casa, trabalho...): ");
-				endereco = new Endereco(teclado.nextLine());
-				System.out.println("Digite o logradouro: ");
-				endereco.setLogradouro(teclado.nextLine());
+				addEndereco(contato);
 				break;
 			case 2:
 				break;
 			}
-		} while (opcao != 7);
+		} while (opcao !=1 && opcao !=2);
 		l.addContato(contato);
 	}
 	
@@ -168,6 +144,7 @@ public class Principal {
 	
 	private static void editarContato(Lista l) {
 		String cpf;
+		Endereco endereco;
 		int opcao;
 		boolean flag = false;
 		boolean success = false;
@@ -179,9 +156,10 @@ public class Principal {
 			System.out.println("1 - Nome");
 			System.out.println("2 - Data de nascimento");
 			System.out.println("3 - CPF");
+			System.out.println("4 - Endereço");
 			opcao = teclado.nextInt();
 			flag = true;
-		} while(opcao < 0 || opcao > 3);
+		} while(opcao < 1 || opcao > 4);
 		teclado.nextLine();
 		flag = false;
 		switch(opcao) {
@@ -220,6 +198,13 @@ public class Principal {
 				success = l.editarCPF(contato, cpf);
 			} while(!success);
 			break;
+		case 4:
+			switch(opcao) {
+				case 1:
+					addEndereco(contato);
+				case 2:
+					removeEndereco(contato);
+			}
 		default:
 			System.out.println("Campo inexistente");
 		}
@@ -260,5 +245,38 @@ public class Principal {
 	private static void imprimeAniversariantes(Lista l) {
 		System.out.println(l.imprimeAniversariantes());
 	}
-
+	
+	private static void addEndereco(Contato contato) {
+		Endereco endereco;
+		teclado.nextLine();
+		System.out.println("Digite o tipo do endereço(Ex: Casa, trabalho...): ");
+		endereco = new Endereco(teclado.nextLine());
+		System.out.println("Digite o logradouro: ");
+		endereco.setLogradouro(teclado.nextLine());
+		System.out.println("Digite o número: ");
+		endereco.setNumero(teclado.nextInt());
+		teclado.nextLine();
+		System.out.println("Digite o complemento: ");
+		endereco.setComplemento(teclado.nextLine());
+		System.out.println("Digite o cidade: ");
+		endereco.setCidade(teclado.nextLine());
+		System.out.println("Digite o Estado: ");
+		endereco.setEstado(teclado.nextLine());
+		System.out.println("Digite o CEP: ");
+		endereco.setCEP(teclado.nextLine());
+		contato.getListaEndereco().addEndereco(endereco);
+	}
+	
+	private static void removeEndereco(Contato contato) {
+		int opcao;
+		for ( int i = 0 ; i < contato.getListaEndereco().size(); i++) {
+			Endereco e = contato.getListaEndereco().getEndereco(i);
+			System.out.println(i + ": " + e.getID() + "\n" + e.getLogradouro() + ", " + e.getNumero() + " - " + e.getCidade() + " - " + e.getEstado());
+		}
+		System.out.println("Selecione qual endereco você deseja excluir: ");
+		do {
+			opcao =teclado.nextInt();
+		}while(opcao > contato.getListaEndereco().size());
+		contato.getListaEndereco().removeEndereco(opcao);
+	}
 }

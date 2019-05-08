@@ -23,6 +23,15 @@ public class Endereco {
 			super();
 			this.ID = ID;
 	}
+	
+	public String getID() {
+		return ID;
+	}
+	
+	public String setID() {
+		return ID;
+	}
+	
 	public String getLogradouro() {
 		return logradouro;
 	}
