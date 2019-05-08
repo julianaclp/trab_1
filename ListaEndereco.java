@@ -31,9 +31,8 @@ public class ListaEndereco implements Iterable<Endereco> {
 		return alListaEndereco.iterator();
 	}
 	
-	public Endereco buscaEndereco(int selecao)){
-		
-		return alListaEndereco.get(i);
+	public Endereco buscaEndereco(int selecao){
+		return alListaEndereco.get(selecao);
 	}
 	
 	public void removeEndereco(int i){

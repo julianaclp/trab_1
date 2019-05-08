@@ -25,12 +25,16 @@ public class Lista implements Iterable<Contato> {
 		alLista.add(contato);
 	}
 	
-	public void removeContato(int i) {
-		alLista.remove(i);
+	public void removeContato(Contato contato) {
+		alLista.remove(contato);
 	}
 	
 	public Contato getContato(int i){
 		return alLista.get(i);
+	}
+	
+	public Contato getContato(Contato c) {
+		return alLista.get(alLista.indexOf(c));
 	}
 	
 	public ArrayList<Contato> getLista() {
@@ -60,66 +64,56 @@ public class Lista implements Iterable<Contato> {
 			}
 		});
 	}
-		
-	public ArrayList<Integer> searchInt(String nome) {
-		ArrayList<Integer> result = null;
-		for(int i = 0; i < alLista.size(); i ++) {
-			if(alLista.get(i).getNome().toLowerCase().contains(nome.toLowerCase())) {
-				if(result == null) result = new ArrayList<Integer>(); 
-				result.add(i);
+	
+	public void ordenaDataNascimento(){
+		Collections.sort(alLista, new Comparator<Contato>() {
+			// aqui dentro vem a classe anônima
+			@Override
+			public int compare(Contato c1, Contato c2) {
+				long diaC1 = c1.getDataNasc().getTimeInMillis();
+				long diaC2 = c2.getDataNasc().getTimeInMillis();
+				return Long.compare(diaC1, diaC2);
+			}
+		});
+	}
+	
+	public ArrayList<Contato> search(String nome) {
+		ArrayList<Contato> result = null;
+		for(Contato c : alLista) {
+			if(c.getNome().toLowerCase().contains(nome.toLowerCase())) {
+				if(result == null) result = new ArrayList<Contato>(); 
+				result.add(c);
 			}
 		}
 		return result;
 	}
 	
-	public int selecionaContato() {
-		ArrayList<Integer> contatos = null;
-		Scanner teclado = new Scanner(System.in);
-		boolean flag = false;
-		int selecao;
-		do {
-			if(flag) System.out.println("Contato inexistente! Verifique os dados e digite novamente.");
-			System.out.print("Digite o nome do contato: ");
-			contatos = this.searchInt(teclado.nextLine());
-			flag = true;
-		} while(contatos.size() == 0);
-		flag = false;
-		if(contatos.size() == 1) return contatos.get(0);
-		do {
-			if(flag) System.out.println("Opção indisponível. Verifique os dados e digite novamente.");
-			System.out.println("Mais de uma opção disponível. Escolha o número do contato: ");
-			for(int i : contatos) {
-				System.out.println(i + " - " + this.getContato(i));
-			}
-			selecao = teclado.nextInt();
-			flag = true;
-		} while(!contatos.contains(selecao));
-		return selecao;
-	}
 	
-	public boolean editarNome(int i, String nome) {
+	public boolean editarNome(Contato c, String nome) {
 		if(nome.length() == 0) return false;
-		this.getContato(i).setNome(nome);
+		c.setNome(nome);
 		return true;
 	}
 	
-	public boolean editarDataNasc(int i, int dia, int mes, int ano) {
-		if(!this.getContato(i).validaDataNasc(dia, mes, ano)) return false;
-		this.getContato(i).setDataNasc(dia, mes, ano);
+	public boolean editarDataNasc(Contato c, int dia, int mes, int ano) {
+		if(!c.validaDataNasc(dia, mes, ano)) return false;
+		c.setDataNasc(dia, mes, ano);
 		return true;
 	}
 	
-	public boolean editarCPF(int i, String cpf) {
+	public boolean editarCPF(Contato c, String cpf) {
 		CPF novoCPF = new CPF(cpf);
 		if(!novoCPF.isValid()) return false;
-		this.getContato(i).setCPF(cpf);
+		c.setCPF(cpf);
 		return true;
 	}
 	
-	public void imprimeAniversariantes() {
+	public String imprimeAniversariantes() {
 		this.ordenaAniversarioJanDez();
 		int mes = 0;
 		int i = 0;
+		int aniversariantesNoMes = 0;
+		String lista = "";
 		String[] meses = {"JANEIRO", 
 				"FEVEREIRO",
 				"MARÇO",
@@ -134,17 +128,21 @@ public class Lista implements Iterable<Contato> {
 				"DEZEMBRO"};
 		while(i < this.size()) {
 			Contato c = this.getContato(i);
-			if(i == 0 && mes == 0) System.out.println(meses[mes]);
 			if(c.getDataNasc().get(Calendar.MONTH) == mes) {
-				System.out.println(c.getNome() + " - " + c.getDataNascString());
+				if(aniversariantesNoMes == 0) {
+					if(mes > 0) lista += "\n";
+					lista += meses[mes] + "\n";
+				}
+				lista += c.getNome() + " - " + c.getDataNasc().get(Calendar.DAY_OF_MONTH) + "\n";
 				i++;
+				aniversariantesNoMes++;
 			}
 			else {
 				mes++;
-				System.out.println();
-				System.out.println(meses[mes]);
+				aniversariantesNoMes = 0;
 			}
 		}
+		return lista;
 	}
 	
 	@Override
@@ -157,9 +155,11 @@ public class Lista implements Iterable<Contato> {
 		return alLista.iterator();
 	}	
 	
-	public void imprimeLista() {
+	public String imprimeLista() {
+		String lista = "";
 		for(Contato c : alLista) {
-			System.out.println(c);
+			lista += c + "\n";
 		}
+		return lista;
 	}
 }

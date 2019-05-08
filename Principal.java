@@ -9,6 +9,7 @@ public class Principal {
 		Lista lc = Lista.getInstance();
 		lc.addContato(new Contato("Joao", 2, 1, 2000));
 		lc.addContato(new Contato("Maria", 2, 2, 1999));
+		lc.addContato(new Contato("Maria", 1, 3, 1999));
 		lc.addContato(new Contato("Pedro", 5, 11, 2001));
 		lc.addContato(new Contato("Tiago", 10, 12, 2000));
 		lc.addContato(new Contato("Jose", 4, 4, 2000));
@@ -38,7 +39,6 @@ public class Principal {
 				break;
 			case 4:
 				ordenaLista(lc);
-				lc.imprimeLista();
 				break;
 			case 5:
 				imprimeAniversariantes(lc);
@@ -133,9 +133,37 @@ public class Principal {
 				break;
 			case 2:
 				break;
-			} while (opcao != 7);
-		}
+			}
+		} while (opcao != 7);
 		l.addContato(contato);
+	}
+	
+	private static Contato selecionaContato(Lista l) {
+		ArrayList<Contato> contatos = null;
+		Scanner teclado = new Scanner(System.in);
+		boolean flag = false;
+		int selecao;
+		int i;
+		do {
+			if(flag) System.out.println("Contato inexistente! Verifique os dados e digite novamente.");
+			System.out.print("Digite o nome do contato: ");
+			contatos = l.search(teclado.nextLine());
+			flag = true;
+		} while(contatos.size() == 0);
+		flag = false;
+		if(contatos.size() == 1) return contatos.get(0);
+		do {
+			if(flag) System.out.println("Opção indisponível. Verifique os dados e digite novamente.");
+			System.out.println("Mais de uma opção disponível. Escolha o número do contato: ");
+			i = 0;
+			for(Contato c : contatos) {
+				System.out.println(i + " - " + c);
+				i++;
+			}
+			selecao = teclado.nextInt();
+			flag = true;
+		} while(selecao < 0 || selecao > contatos.size() - 1);
+		return contatos.get(selecao);
 	}
 	
 	private static void editarContato(Lista l) {
@@ -144,7 +172,7 @@ public class Principal {
 		boolean flag = false;
 		boolean success = false;
 		Scanner teclado = new Scanner(System.in);
-		int contato = l.selecionaContato();
+		Contato contato = selecionaContato(l);
 		System.out.println("Informe o dado que deseja alterar: ");
 		do {
 			if(flag) System.out.println("Opção inválida! Verifique os dados e digite novamente.");
@@ -206,9 +234,10 @@ public class Principal {
 			if(flag) System.out.println("Opção inválida! Verifique os dados e digite novamente.");
 			System.out.println("1 - A-Z");
 			System.out.println("2 - Z-A");
+			System.out.println("3 - Data de nascimento");
 			opcao = teclado.nextInt();
 			flag = true;
-		} while(opcao < 1 || opcao > 2);
+		} while(opcao < 1 || opcao > 3);
 		switch(opcao) {
 		case 1:
 			l.ordenaAZ();
@@ -216,18 +245,20 @@ public class Principal {
 		case 2:
 			l.ordenaZA();
 			break;
+		case 3:
+			l.ordenaDataNascimento();
+			break;
 		}
+		System.out.println(l.imprimeLista());
 	}
 	
 	private static void removeContato(Lista l) {
-		boolean flag = false;
-		int selecao;
-		int contato = l.selecionaContato();
+		Contato contato = selecionaContato(l);
 		l.removeContato(contato);
 	}
 	
 	private static void imprimeAniversariantes(Lista l) {
-		l.imprimeAniversariantes();
+		System.out.println(l.imprimeAniversariantes());
 	}
 
 }
