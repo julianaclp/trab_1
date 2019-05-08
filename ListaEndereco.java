@@ -1,11 +1,7 @@
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 
 public class ListaEndereco implements Iterable<Endereco> {
-	// implements Iterable<Contato> exigiu iterator()
 	
 	private ArrayList<Endereco> alListaEndereco = null;
 	private static ListaEndereco minhaListaEndereco;
@@ -21,8 +17,7 @@ public class ListaEndereco implements Iterable<Endereco> {
 		alListaEndereco = new ArrayList<Endereco>();
 	}
 	
-	public void addEndereco(Endereco endereco){
-		// eventuais regras antes da adição
+	public void addEndereco(Endereco endereco) {
 		alListaEndereco.add(endereco);
 	}
 

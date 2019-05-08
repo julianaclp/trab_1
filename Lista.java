@@ -3,10 +3,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Scanner;
 
 public class Lista implements Iterable<Contato> {
-	// implements Iterable<Contato> exigiu iterator()
 	
 	private ArrayList<Contato> alLista = null;
 	private static Lista minhaLista;
@@ -31,10 +29,6 @@ public class Lista implements Iterable<Contato> {
 	
 	public Contato getContato(int i){
 		return alLista.get(i);
-	}
-	
-	public Contato getContato(Contato c) {
-		return alLista.get(alLista.indexOf(c));
 	}
 	
 	public ArrayList<Contato> getLista() {

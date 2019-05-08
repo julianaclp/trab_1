@@ -83,13 +83,8 @@ public class Contato implements Comparable<Contato> {
 		return nome;
 	}
 
-	// compareTo é comparar na ordem natural (escolher uma atributo da classe, aquele que indica a ordem natural)
-	// nesta classe o candidato ideal é o nome
-	// ou seja, nome deste objeto é comparado com o nome do objeto contato que chega por parâmetro
 	public int compareTo(Contato contato) {
 		return this.nome.compareToIgnoreCase(contato.nome);
-		// usando método compareToIgnoreCase da classe String
-	}
-	// este método será usado pelo Collection.sort 
+	} 
 
 }

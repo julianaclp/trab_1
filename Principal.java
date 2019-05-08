@@ -21,27 +21,31 @@ public class Principal {
 		
 		ListaEndereco le = ListaEndereco.getInstance();
 		
-		menu();
-		System.out.print("\nOpcao: ");
 		do {
-			// menu de opcoes contato
+			menu();
+			System.out.print("\nOpcao: ");
 			opcao = teclado.nextInt();
-			// cada opcao chama uma funÃ§Ã£o static da main
+			
 			switch (opcao) {
 			case 1:
 				addContato(lc);
+				esperaParaContinuar();
 				break;
 			case 2: 
 				editarContato(lc);
+				esperaParaContinuar();
 				break;
 			case 3:
 				removeContato(lc);
+				esperaParaContinuar();
 				break;
 			case 4:
 				ordenaLista(lc);
+				esperaParaContinuar();
 				break;
 			case 5:
 				imprimeAniversariantes(lc);
+				esperaParaContinuar();
 				break;
 			case 6:
 				//imprimirEtiquetas(lc);
@@ -220,6 +224,9 @@ public class Principal {
 			System.out.println("1 - A-Z");
 			System.out.println("2 - Z-A");
 			System.out.println("3 - Data de nascimento");
+			System.out.println();
+			System.out.print("Opção: ");
+			System.out.println();
 			opcao = teclado.nextInt();
 			flag = true;
 		} while(opcao < 1 || opcao > 3);
@@ -278,5 +285,11 @@ public class Principal {
 			opcao =teclado.nextInt();
 		}while(opcao > contato.getListaEndereco().size());
 		contato.getListaEndereco().removeEndereco(opcao);
+	}
+	
+	private static void esperaParaContinuar() {
+		System.out.println("Pressione enter para voltar ao menu");
+		teclado.nextLine();
+		teclado.nextLine();
 	}
 }
