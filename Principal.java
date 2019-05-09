@@ -17,9 +17,15 @@ public class Principal {
 		lc.addContato(new Contato("Mateus", 3, 1, 1950));
 		Contato teste = new Contato("Juliana", 1, 9, 1996);
 		teste.setCPF("09489104965");
+		Endereco e = new Endereco("Casa", 
+				"R Jacob Romanichen", 
+				146,
+				"Curitiba",
+				"PR",
+				"81710430",
+				"--");
+		teste.addEndereco(e);
 		lc.addContato(teste);
-		
-		ListaEndereco le = ListaEndereco.getInstance();
 		
 		do {
 			menu();

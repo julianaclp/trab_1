@@ -4,16 +4,8 @@ import java.util.Iterator;
 public class ListaEndereco implements Iterable<Endereco> {
 	
 	private ArrayList<Endereco> alListaEndereco = null;
-	private static ListaEndereco minhaListaEndereco;
 	
-	
-	public static ListaEndereco getInstance(){
-		if (minhaListaEndereco == null)
-			minhaListaEndereco = new ListaEndereco();		
-		return minhaListaEndereco;
-	}
-
-	private ListaEndereco() {
+	public ListaEndereco() {
 		alListaEndereco = new ArrayList<Endereco>();
 	}
 	

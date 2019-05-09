@@ -9,7 +9,7 @@ public class Contato implements Comparable<Contato> {
 	private String nome;
 	private GregorianCalendar dataNasc;
 	private CPF cpf; 
-	private ListaEndereco alEndereco = ListaEndereco.getInstance();
+	private ListaEndereco alEndereco = new ListaEndereco();
 	
 	public Contato(String nome) {
 		super();
@@ -37,7 +37,7 @@ public class Contato implements Comparable<Contato> {
 	}
 	
 	public void addEndereco(Endereco endereco) {
-		alEndereco.add(endereco);
+		alEndereco.addEndereco(endereco);
 	}
 
 	public void setNome(String nome) {
