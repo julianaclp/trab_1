@@ -4,16 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-//teste
-// implements a interface Comparabel exige a implementação do método compareTo
 public class Contato implements Comparable<Contato> {
-	// implements Comparable<Contato> exigiu compareTo()
 	
 	private String nome;
 	private GregorianCalendar dataNasc;
-	private CPF cpf;
-	
-	//private String cpf; ou então atributo CPF, depende de como será a classe 
+	private CPF cpf; 
 	private ListaEndereco alEndereco = ListaEndereco.getInstance();
 	
 	public Contato(String nome) {
@@ -50,13 +45,11 @@ public class Contato implements Comparable<Contato> {
 	}
 	
 	public boolean validaDataNasc (int dia, int mes, int ano) {
-		GregorianCalendar data = new GregorianCalendar();
+		GregorianCalendar data = new GregorianCalendar(ano, mes - 1, dia);
 		GregorianCalendar hoje = new GregorianCalendar();
-		if(ano > hoje.get(Calendar.YEAR)) return false;
-		if(mes > 12) return false;
-		data.set(Calendar.MONTH, mes - 1);
-		data.set(Calendar.YEAR, ano);
-		if(dia > data.getActualMaximum(Calendar.DAY_OF_MONTH)) return false;
+		if(data.getTimeInMillis() > hoje.getTimeInMillis()) return false;
+		if(data.get(Calendar.MONTH) > 12) return false;
+		if(data.get(Calendar.DAY_OF_MONTH) > data.getActualMaximum(Calendar.DAY_OF_MONTH)) return false;
 		return true;
 	}
 	
@@ -85,6 +78,12 @@ public class Contato implements Comparable<Contato> {
 
 	public int compareTo(Contato contato) {
 		return this.nome.compareToIgnoreCase(contato.nome);
-	} 
+	}
+	
+	public String getEtiquetas() {
+		String etiqueta = "";
+		if(this.alEndereco.size() == 0) { }
+		return etiqueta;
+	}
 
 }

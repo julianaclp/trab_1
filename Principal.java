@@ -203,12 +203,20 @@ public class Principal {
 			} while(!success);
 			break;
 		case 4:
+			do {
+				System.out.println("1 - Adicionar endereço");
+				System.out.println("2 - Excluir endereço");
+				opcao = teclado.nextInt();
+			} while(opcao < 1 || opcao > 2);
 			switch(opcao) {
 				case 1:
 					addEndereco(contato);
+					break;
 				case 2:
 					removeEndereco(contato);
+					break;
 			}
+			break;
 		default:
 			System.out.println("Campo inexistente");
 		}
@@ -265,7 +273,7 @@ public class Principal {
 		teclado.nextLine();
 		System.out.println("Digite o complemento: ");
 		endereco.setComplemento(teclado.nextLine());
-		System.out.println("Digite o cidade: ");
+		System.out.println("Digite a cidade: ");
 		endereco.setCidade(teclado.nextLine());
 		System.out.println("Digite o Estado: ");
 		endereco.setEstado(teclado.nextLine());

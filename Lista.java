@@ -61,7 +61,6 @@ public class Lista implements Iterable<Contato> {
 	
 	public void ordenaDataNascimento(){
 		Collections.sort(alLista, new Comparator<Contato>() {
-			// aqui dentro vem a classe anônima
 			@Override
 			public int compare(Contato c1, Contato c2) {
 				long diaC1 = c1.getDataNasc().getTimeInMillis();
