@@ -35,6 +35,10 @@ public class Contato implements Comparable<Contato> {
 	public ListaEndereco getListaEndereco() {
 		return alEndereco;
 	}
+	
+	public void addEndereco(Endereco endereco) {
+		alEndereco.add(endereco);
+	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -45,11 +49,14 @@ public class Contato implements Comparable<Contato> {
 	}
 	
 	public boolean validaDataNasc (int dia, int mes, int ano) {
-		GregorianCalendar data = new GregorianCalendar(ano, mes - 1, dia);
+		GregorianCalendar data = new GregorianCalendar();
 		GregorianCalendar hoje = new GregorianCalendar();
+		if(mes > 12) return false;
+		data.set(Calendar.MONTH, mes - 1);
+		if(dia > data.getActualMaximum(Calendar.DAY_OF_MONTH)) return false;
+		data.set(Calendar.DAY_OF_MONTH, dia);
+		data.set(Calendar.YEAR, ano);
 		if(data.getTimeInMillis() > hoje.getTimeInMillis()) return false;
-		if(data.get(Calendar.MONTH) > 12) return false;
-		if(data.get(Calendar.DAY_OF_MONTH) > data.getActualMaximum(Calendar.DAY_OF_MONTH)) return false;
 		return true;
 	}
 	
@@ -82,7 +89,13 @@ public class Contato implements Comparable<Contato> {
 	
 	public String getEtiquetas() {
 		String etiqueta = "";
-		if(this.alEndereco.size() == 0) { }
+		if(this.alEndereco.size() == 0) return etiqueta;
+		for(Endereco e : this.getListaEndereco()) {
+			etiqueta += this.getNome() + "\n";
+			etiqueta += e.getLogradouro() + ", " + e.getNumero() + "\n";
+			etiqueta += e.getCidade() + " - " + e.getEstado() + "\n";
+			etiqueta += "CEP " + e.getCEP() + "\n\n";
+		}
 		return etiqueta;
 	}
 

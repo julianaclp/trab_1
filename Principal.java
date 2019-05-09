@@ -48,7 +48,8 @@ public class Principal {
 				esperaParaContinuar();
 				break;
 			case 6:
-				//imprimirEtiquetas(lc);
+				imprimirEtiquetas(lc);
+				esperaParaContinuar();
 				break;
 			case 7:
 				System.exit(0);
@@ -115,6 +116,7 @@ public class Principal {
 				break;
 			}
 		} while (opcao !=1 && opcao !=2);
+		System.out.println("Cadastro finalizado!");
 		l.addContato(contato);
 	}
 	
@@ -284,7 +286,11 @@ public class Principal {
 	
 	private static void removeEndereco(Contato contato) {
 		int opcao;
-		for ( int i = 0 ; i < contato.getListaEndereco().size(); i++) {
+		if(contato.getListaEndereco().size() == 0) {
+			System.out.println("O contato não possui endereços.");
+			return;
+		}
+		for (int i = 0 ; i < contato.getListaEndereco().size(); i++) {
 			Endereco e = contato.getListaEndereco().getEndereco(i);
 			System.out.println(i + ": " + e.getID() + "\n" + e.getLogradouro() + ", " + e.getNumero() + " - " + e.getCidade() + " - " + e.getEstado());
 		}
@@ -299,5 +305,14 @@ public class Principal {
 		System.out.println("Pressione enter para voltar ao menu");
 		teclado.nextLine();
 		teclado.nextLine();
+	}
+	
+	private static void imprimirEtiquetas(Lista l) {
+		String etiquetas = "";
+		for(Contato c : l) {
+			etiquetas += c.getEtiquetas();
+		}
+		if(etiquetas.length() == 0) System.out.println("Não há etiquetas para serem impressas.");
+		else System.out.println(etiquetas);
 	}
 }
