@@ -137,7 +137,7 @@ public class Principal {
 			System.out.print("Digite o nome do contato: ");
 			contatos = l.search(teclado.nextLine());
 			flag = true;
-		} while(contatos.size() == 0);
+		} while(contatos == null);
 		flag = false;
 		if(contatos.size() == 1) return contatos.get(0);
 		do {
@@ -262,7 +262,8 @@ public class Principal {
 	
 	private static void removeContato(Lista l) {
 		Contato contato = selecionaContato(l);
-		l.removeContato(contato);
+		if(contato == null) System.out.println("Contato inexistente");
+		else l.removeContato(contato);
 	}
 	
 	private static void imprimeAniversariantes(Lista l) {
