@@ -26,6 +26,18 @@ public class Principal {
 				"--");
 		teste.addEndereco(e);
 		lc.addContato(teste);
+		teste = new Contato("Willer", 27, 01, 1997);
+		teste.setCPF("09992670940");
+		Endereco e1 = new Endereco("Casa", 
+				"R Jose Valle", 
+				1766,
+				"Curitiba",
+				"PR",
+				"82020250",
+				"Apto 07");
+		teste.addEndereco(e1);
+		lc.addContato(teste);
+		
 		
 		do {
 			menu();
@@ -263,7 +275,10 @@ public class Principal {
 	private static void removeContato(Lista l) {
 		Contato contato = selecionaContato(l);
 		if(contato == null) System.out.println("Contato inexistente");
-		else l.removeContato(contato);
+		else {
+			l.removeContato(contato);
+			System.out.println("Contato removido com sucesso");
+		}
 	}
 	
 	private static void imprimeAniversariantes(Lista l) {
@@ -316,6 +331,7 @@ public class Principal {
 	
 	private static void imprimirEtiquetas(Lista l) {
 		String etiquetas = "";
+		l.ordenaAZ();
 		for(Contato c : l) {
 			etiquetas += c.getEtiquetas();
 		}
